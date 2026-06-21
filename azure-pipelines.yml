@@ -1,0 +1,70 @@
+trigger:
+  branches:
+    include:
+      - main
+      - master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  CPANEL_HOST: 'shadowbridge.store'
+  CPANEL_USER: 'ghostwizardg'
+
+steps:
+  - checkout: self
+
+  - script: |
+      echo "Deploying shadowbridge.store..."
+
+      deploy_file() {
+        local file="$1"
+        local fname=$(basename "$file")
+
+        # Detect binary vs text
+        if file "$file" | grep -qE 'image|binary'; then
+          # Binary upload via multipart
+          RESP=$(curl -sk -X POST \
+            "https://$(CPANEL_HOST):2083/execute/Fileman/upload_files" \
+            -H "Authorization: cpanel $(CPANEL_USER):$(CPANEL_TOKEN)" \
+            -F "dir=/home/ghostwizardg/public_html" \
+            -F "overwrite=1" \
+            -F "file-1=@$file;filename=$fname")
+        else
+          # Text upload
+          RESP=$(curl -sk \
+            "https://$(CPANEL_HOST):2083/execute/Fileman/save_file_content" \
+            -H "Authorization: cpanel $(CPANEL_USER):$(CPANEL_TOKEN)" \
+            --data-urlencode "dir=/home/ghostwizardg/public_html" \
+            --data-urlencode "file=$fname" \
+            --data-urlencode "content@$file")
+        fi
+
+        if echo "$RESP" | grep -q '"status":1'; then
+          echo "  ✓ $fname"
+        else
+          echo "  ✗ $fname: $RESP"
+          exit 1
+        fi
+      }
+
+      # Deploy all web files
+      for f in index.html .htaccess favicon.ico favicon-16x16.png favicon-32x32.png favicon-48x48.png favicon-192x192.png favicon-512x512.png; do
+        [ -f "$f" ] && deploy_file "$f"
+      done
+
+      echo "Deployment complete!"
+    displayName: 'Deploy to shadowbridge.store'
+    env:
+      CPANEL_TOKEN: $(CPANEL_TOKEN)
+
+  - script: |
+      echo "Verifying deployment..."
+      HTTP=$(curl -sk -o /dev/null -w "%{http_code}" https://shadowbridge.store/)
+      if [ "$HTTP" = "200" ]; then
+        echo "✓ shadowbridge.store is live (HTTP $HTTP)"
+      else
+        echo "✗ Unexpected HTTP $HTTP"
+        exit 1
+      fi
+    displayName: 'Verify live site'
