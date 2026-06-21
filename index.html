@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ShadowBridge — Cybersecurity Monitoring Platform | 12-Module Security Arsenal</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/favicon-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png">
 <meta name="description" content="ShadowBridge is a cybersecurity monitoring platform with 12 integrated modules — real-time dashboards, honeypot aggregation, SIEM, C2 tracking, and threat intelligence for security researchers and homelab operators.">
 <meta name="keywords" content="cybersecurity platform, security monitoring, honeypot, SIEM dashboard, threat intelligence, Python security tools, network monitoring, Cowrie honeypot, MITRE ATT&CK, real-time security dashboard">
 <meta name="author" content="Gabriel Szabados — wizardg99">
@@ -309,6 +314,33 @@ h2{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;margin-bottom:14px;letter-
 .af-msg{color:var(--muted);}
 .af-msg .ip{color:var(--cyan);}
 
+/* ── NOXCOIN ── */
+.nox-section{padding:88px 20px;max-width:1100px;margin:0 auto;}
+.nox-earn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin:40px 0;}
+.nox-earn-card{background:linear-gradient(135deg,rgba(0,255,157,.04),rgba(0,212,255,.04));border:1px solid rgba(0,255,157,.15);border-radius:12px;padding:24px;text-align:center;}
+.nox-earn-card .icon{font-size:2rem;margin-bottom:12px;}
+.nox-earn-card .amount{font-size:1.6rem;font-weight:900;color:var(--cyan2);font-family:monospace;}
+.nox-earn-card .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:4px 0 8px;}
+.nox-earn-card p{font-size:.82rem;color:var(--muted);line-height:1.5;}
+.nox-ticker{background:rgba(0,255,157,.04);border:1px solid rgba(0,255,157,.12);border-radius:8px;padding:12px 18px;font-family:monospace;font-size:.8rem;color:var(--cyan2);margin-bottom:40px;display:flex;align-items:center;gap:12px;}
+.nox-ticker .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan2);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.bounty-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:32px 0;}
+.bounty-card{border-radius:10px;padding:20px 24px;border:1px solid;}
+.bounty-low{background:rgba(0,212,255,.04);border-color:rgba(0,212,255,.2);}
+.bounty-med{background:rgba(139,92,246,.05);border-color:rgba(139,92,246,.25);}
+.bounty-crit{background:rgba(255,59,92,.06);border-color:rgba(255,59,92,.3);}
+.bounty-badge{display:inline-block;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+.bounty-badge.low{background:rgba(0,212,255,.15);color:var(--cyan);}
+.bounty-badge.med{background:rgba(139,92,246,.2);color:var(--purple);}
+.bounty-badge.crit{background:rgba(255,59,92,.2);color:var(--red);}
+.bounty-reward{font-size:1.4rem;font-weight:900;font-family:monospace;margin:6px 0;}
+.bounty-reward.low{color:var(--cyan);}
+.bounty-reward.med{color:var(--purple);}
+.bounty-reward.crit{color:var(--red);}
+.bounty-card p{font-size:.82rem;color:var(--muted);line-height:1.5;margin-top:6px;}
+.bounty-card ul{margin-top:10px;padding-left:16px;font-size:.8rem;color:var(--muted);line-height:1.8;}
+
 /* ── CTA SECTION ── */
 .cta-section{
   text-align:center;padding:100px 20px;position:relative;overflow:hidden;
@@ -386,6 +418,7 @@ footer{
   <div class="nav-links">
     <a href="#modules">Arsenal</a>
     <a href="#tiers">Pricing</a>
+    <a href="#noxcoin" style="color:var(--cyan2);">NOXcoin</a>
     <a href="#architecture">How it works</a>
     <a href="/login" class="btn btn-outline" style="padding:6px 18px;">Sign in</a>
     <a href="/register" class="btn btn-primary" style="padding:6px 18px;">Deploy free →</a>
@@ -790,19 +823,11 @@ footer{
         <div style="font-size:.75rem;color:var(--muted);margin-bottom:12px;">Az anonimnak köszönheti.</div>
         <div style="background:rgba(255,255,255,.04);border-radius:6px;padding:10px;">
           <div style="font-size:.7rem;color:var(--muted);margin-bottom:6px;text-transform:uppercase;">Cím</div>
-          <div style="font-family:monospace;font-size:.65rem;color:var(--orange);word-break:break-all;">[BITCOIN CÍM]</div>
+          <div style="font-family:monospace;font-size:.65rem;color:var(--orange);word-break:break-all;">37yM153MBrDJpefnzMcabMqES61oLUpGfx</div>
         </div>
       </div>
 
-      <div style="background:rgba(255,255,255,.02);border:1px solid rgba(139,92,246,.15);border-radius:10px;padding:20px;text-align:center;">
-        <div style="font-size:1.8rem;margin-bottom:8px;">Ξ</div>
-        <div style="font-weight:700;margin-bottom:6px;color:var(--fg);">Ethereum</div>
-        <div style="font-size:.75rem;color:var(--muted);margin-bottom:12px;">ERC-20, Polygon, Base...</div>
-        <div style="background:rgba(255,255,255,.04);border-radius:6px;padding:10px;">
-          <div style="font-size:.7rem;color:var(--muted);margin-bottom:6px;text-transform:uppercase;">Cím</div>
-          <div style="font-family:monospace;font-size:.65rem;color:#a78bfa;word-break:break-all;">[ETHEREUM CÍM]</div>
-        </div>
-      </div>
+      <!-- ETH cím: hamarosan -->
 
     </div>
 
@@ -838,6 +863,120 @@ footer{
       <tr><td>WiFi presence detection</td><td class="dash">—</td><td class="dash">—</td><td class="check-red">✓</td></tr>
     </tbody>
   </table>
+</section>
+
+<!-- ── NOXCOIN EARN ── -->
+<section id="noxcoin" class="nox-section fade-in">
+  <span class="section-tag">NOXcoin · $NOX</span>
+  <h2>Earn tokens. <span class="hl-cyan">Just by being here.</span></h2>
+  <p class="section-sub">NOXcoin is the ShadowBridge community token on Solana. Early subscribers collect $NOX automatically — no wallets needed at first. When the token launches, you claim what you earned.</p>
+
+  <div class="nox-ticker">
+    <span class="dot"></span>
+    Teszt / Early Access fázis — a token gyűjtés most kezdődik. Mainnet launch közelgő.
+  </div>
+
+  <div class="nox-earn-grid">
+    <div class="nox-earn-card">
+      <div class="icon">📡</div>
+      <div class="amount">+50 NOX</div>
+      <div class="label">nap / Monitor tier</div>
+      <p>Ingyenes regisztráció. Minden nap amelyet aktívan töltesz a platformon.</p>
+    </div>
+    <div class="nox-earn-card">
+      <div class="icon">🔐</div>
+      <div class="amount">+200 NOX</div>
+      <div class="label">nap / Pro tier</div>
+      <p>Pro előfizetőként 4× annyi tokent gyűjtesz. Havonta ~6000 $NOX automatikusan.</p>
+    </div>
+    <div class="nox-earn-card">
+      <div class="icon">⚡</div>
+      <div class="amount">+500 NOX</div>
+      <div class="label">nap / Arsenal tier</div>
+      <p>A teljes arzenál mellé napi 500 token. Aktív laborok, honeypot aktivitás alapján bónusz.</p>
+    </div>
+    <div class="nox-earn-card">
+      <div class="icon">🕐</div>
+      <div class="amount">+5,000 NOX</div>
+      <div class="label">korai tag bónusz</div>
+      <p>Az első 500 regisztrált felhasználó egyszeri bónuszt kap a launch előtt.</p>
+    </div>
+  </div>
+
+  <div style="background:rgba(0,255,157,.04);border:1px solid rgba(0,255,157,.1);border-radius:12px;padding:28px 32px;margin-bottom:56px;">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;">
+        <div style="font-size:.65rem;color:var(--cyan2);text-transform:uppercase;letter-spacing:3px;margin-bottom:6px;">Token info</div>
+        <div style="font-family:monospace;font-size:.85rem;color:var(--muted);line-height:2;">
+          <span style="color:var(--fg);">Name:</span> NOXcoin &nbsp;·&nbsp;
+          <span style="color:var(--fg);">Symbol:</span> $NOX<br>
+          <span style="color:var(--fg);">Network:</span> Solana &nbsp;·&nbsp;
+          <span style="color:var(--fg);">Supply:</span> 100,000,000 $NOX<br>
+          <span style="color:var(--fg);">Utility:</span> platform hozzáférés · prémium funkciók · governance
+        </div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:.7rem;color:var(--muted);margin-bottom:6px;">Token státusz</div>
+        <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:20px;padding:6px 18px;font-size:.75rem;color:#fbbf24;font-weight:700;">🚧 PRE-LAUNCH</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bug Bounty -->
+  <span class="section-tag" id="bugbounty">Bug Bounty</span>
+  <h2>Find bugs. <span class="hl-red">Get rewarded.</span></h2>
+  <p class="section-sub">A platformot folyamatosan fejlesztjük. Ha hibát találsz — legyen az UI glitch vagy biztonsági rés — jutalomazunk. Kritikus hibáért az Arsenal tier is jár.</p>
+
+  <div class="bounty-grid">
+
+    <div class="bounty-card bounty-low">
+      <span class="bounty-badge low">Low</span>
+      <div class="bounty-reward low">500–2,000 NOX</div>
+      <p>UI hibák, kisebb funkcionális problémák, UX javaslatok amelyek bekerülnek a kódba.</p>
+      <ul>
+        <li>Törött link / layout hiba</li>
+        <li>Hibás szöveg / fordítás</li>
+        <li>Minor API bug (helyes output, rossz formátum)</li>
+      </ul>
+    </div>
+
+    <div class="bounty-card bounty-med">
+      <span class="bounty-badge med">Medium</span>
+      <div class="bounty-reward med">5,000–25,000 NOX</div>
+      <p>Funkcionális hibák amelyek adatvesztést, helytelen működést okoznak, vagy service-t érintenek.</p>
+      <ul>
+        <li>Auth bypass (demo / staging környezet)</li>
+        <li>API endpoint hibás jogosultság</li>
+        <li>WebSocket / real-time adat inkonzisztencia</li>
+        <li>Dashboard adatvesztés edge-case</li>
+      </ul>
+    </div>
+
+    <div class="bounty-card bounty-crit">
+      <span class="bounty-badge crit">Critical</span>
+      <div class="bounty-reward crit">50,000+ NOX<br><span style="font-size:.85rem;color:var(--muted);">+ 3 hónap Arsenal ingyen</span></div>
+      <p>Éles rendszert érintő biztonsági sérülékenység — authentikáció, session, RCE, adatszivárgás.</p>
+      <ul>
+        <li>RCE / LFI / SSRF a lab platformon</li>
+        <li>Éles felhasználói adatokhoz való hozzáférés</li>
+        <li>Privilégiumemelés production rendszeren</li>
+        <li>Cryptográfiai hiba / token manipuláció</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div style="background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;padding:20px 28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+    <div style="font-size:1.8rem;">📬</div>
+    <div style="flex:1;min-width:180px;">
+      <div style="font-weight:700;margin-bottom:4px;">Hogyan jelents?</div>
+      <div style="font-size:.82rem;color:var(--muted);">Küldj emailt a részletekkel: lépések, screenshot, hatás leírása. Minden bejelentést 48 órán belül megvizsgálunk.</div>
+    </div>
+    <a href="mailto:security@shadowbridge.store" class="btn btn-outline" style="border-color:rgba(255,59,92,.4);color:var(--red);white-space:nowrap;">
+      security@shadowbridge.store
+    </a>
+  </div>
+
 </section>
 
 <!-- ── CTA ── -->
@@ -881,8 +1020,8 @@ footer{
     <a href="#architecture">Docs</a>
     <a href="https://github.com/webwizardg99/shadow-lab" target="_blank">GitHub</a>
     <a href="/login">Sign in</a>
-    <a href="/privacy" style="color:var(--muted);font-size:.7rem;">Privacy</a>
-    <a href="/terms" style="color:var(--muted);font-size:.7rem;">Terms</a>
+    <a href="mailto:hello@shadowbridge.store" style="color:var(--muted);font-size:.7rem;">Privacy</a>
+    <a href="mailto:hello@shadowbridge.store" style="color:var(--muted);font-size:.7rem;">Terms</a>
   </div>
   <div class="footer-copy">© 2026 ShadowBridge — Built for the shadows.</div>
 </footer>
