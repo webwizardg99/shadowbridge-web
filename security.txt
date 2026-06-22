@@ -1,0 +1,3 @@
+Contact: mailto:hello@shadowbridge.store
+Preferred-Languages: en, hu
+Canonical: https://shadowbridge.store/.well-known/security.txt
