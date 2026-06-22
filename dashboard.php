@@ -217,7 +217,10 @@ nav a .nav-badge{position:absolute;right:12px;background:var(--red);color:#fff;f
   </nav>
   <div class="sidebar-footer">
     <div><?= htmlspecialchars($username) ?> · <?= strtoupper($plan) ?></div>
-    <div style="margin-top:4px;"><a href="/logout">Sign out</a></div>
+    <div style="margin-top:4px;display:flex;gap:10px;">
+      <a href="/logout">Sign out</a>
+      <a href="/setup.html" target="_blank" style="color:var(--muted)">How to</a>
+    </div>
   </div>
 </aside>
 
@@ -435,9 +438,15 @@ nav a .nav-badge{position:absolute;right:12px;background:var(--red);color:#fff;f
 
     <!-- SETUP / PUSH TOKEN -->
     <div class="panel" id="panel-setup">
-      <div style="margin-bottom:18px;">
-        <div style="font-size:.8rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;">Agent Setup &amp; Push Token</div>
-        <div style="font-size:.7rem;color:var(--muted);">Connect your network node to this dashboard via the push daemon.</div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="font-size:.8rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;">Agent Setup &amp; Push Token</div>
+          <div style="font-size:.7rem;color:var(--muted);">Connect your network node to this dashboard via the push daemon.</div>
+        </div>
+        <a href="/setup.html" target="_blank"
+           style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;background:var(--surface2);border:1px solid var(--cyan);color:var(--cyan);border-radius:6px;font-size:.72rem;font-weight:700;letter-spacing:.5px;text-decoration:none;">
+          📖 Részletes telepítési útmutató ↗
+        </a>
       </div>
 
       <div style="margin-bottom:18px;padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;">
@@ -456,11 +465,17 @@ nav a .nav-badge{position:absolute;right:12px;background:var(--red);color:#fff;f
       <div style="margin-bottom:18px;padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;">
         <div style="font-size:.7rem;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;">1 — Download the push daemon</div>
         <div class="term-section" style="margin:0;">
-          <div class="term-bar"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div><div class="term-title-txt">bash</div></div>
+          <div class="term-bar"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div><div class="term-title-txt">Windows PowerShell</div></div>
           <div class="term-body" style="padding:12px 16px;font-size:.72rem;line-height:1.7;">
-            <span style="color:var(--muted)"># Download sb_push.py to your machine</span><br>
+            <span style="color:var(--muted)"># Python letöltés (ha nincs): https://python.org → "Add to PATH" pipálva!</span><br>
+            Invoke-WebRequest https://shadowbridge.store/sb_push.py -OutFile sb_push.py<br>
+            pip install aiohttp psutil
+          </div>
+        </div>
+        <div class="term-section" style="margin:8px 0 0;">
+          <div class="term-bar"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div><div class="term-title-txt">Linux / macOS bash</div></div>
+          <div class="term-body" style="padding:12px 16px;font-size:.72rem;line-height:1.7;">
             wget https://shadowbridge.store/sb_push.py -O ~/sb_push.py<br>
-            chmod +x ~/sb_push.py<br>
             pip install aiohttp psutil
           </div>
         </div>
@@ -481,12 +496,18 @@ nav a .nav-badge{position:absolute;right:12px;background:var(--red);color:#fff;f
       <div style="margin-bottom:18px;padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;">
         <div style="font-size:.7rem;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;">3 — Run / Auto-start</div>
         <div class="term-section" style="margin:0;">
-          <div class="term-bar"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div><div class="term-title-txt">bash</div></div>
+          <div class="term-bar"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div><div class="term-title-txt">Windows PowerShell — test</div></div>
           <div class="term-body" style="padding:12px 16px;font-size:.72rem;line-height:1.7;">
-            <span style="color:var(--muted)"># Run once to test</span><br>
+            python sb_push.py --once<br><br>
+            <span style="color:var(--muted)"># Auto-start (Admin PowerShell):</span><br>
+            schtasks /create /tn "ShadowBridge" /tr "python %USERPROFILE%\sb_push.py" /sc minute /mo 1 /f
+          </div>
+        </div>
+        <div class="term-section" style="margin:8px 0 0;">
+          <div class="term-bar"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div><div class="term-title-txt">Linux / macOS bash — test</div></div>
+          <div class="term-body" style="padding:12px 16px;font-size:.72rem;line-height:1.7;">
             python3 ~/sb_push.py --once<br><br>
-            <span style="color:var(--muted)"># Auto-push every minute via cron</span><br>
-            <span style="color:var(--muted)"># Add to crontab: crontab -e</span><br>
+            <span style="color:var(--muted)"># Auto via cron (crontab -e):</span><br>
             */1 * * * * python3 ~/sb_push.py --once &gt;&gt; /tmp/sb-push.log 2&gt;&amp;1
           </div>
         </div>
