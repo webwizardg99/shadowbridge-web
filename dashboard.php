@@ -637,25 +637,37 @@ function renderCommand(c) {
 }
 
 function renderRuView(r) {
-  if (!r || !r.online) {
+  if (!r || (!r.online && !(r.locations && r.locations.length))) {
     document.getElementById('ruview-status').textContent = 'RuView offline (port 3002/3003 unreachable)';
     return;
   }
-  const presence = r.presence || r.count > 0;
+  const count    = (r.locations && r.locations.length) || r.count || 0;
+  const presence = r.presence || count > 0;
   const pEl = document.getElementById('ruview-presence-val');
   pEl.textContent = presence ? '● PRESENT' : '○ EMPTY';
   pEl.className   = 'ruview-big ' + (presence ? 'present' : 'absent');
-  document.getElementById('ruview-count-lbl').textContent = `People detected: ${r.count ?? 0}`;
+  document.getElementById('ruview-count-lbl').textContent = `People detected: ${count}`;
   const locs = r.locations || [];
   document.getElementById('ruview-locations').innerHTML = locs.length
-    ? locs.map((l,i)=>`Person ${i+1}: x=${l.x??'?'} y=${l.y??'?'}`).join('<br>')
+    ? locs.map((l,i) => {
+        const bx   = l.bbox ? Math.round(l.bbox.x) : (l.x ?? '?');
+        const by   = l.bbox ? Math.round(l.bbox.y) : (l.y ?? '?');
+        const conf = l.confidence != null ? Math.round(l.confidence * 100) + '%' : '';
+        const tid  = l.id ? ` ID:${l.id}` : '';
+        return `Person ${i+1}${tid} · pos(${bx},${by}) ${conf}`;
+      }).join('<br>')
     : '—';
   const hrEl = document.getElementById('ruview-hr');
   const rrEl = document.getElementById('ruview-rr');
   hrEl.innerHTML = r.hr != null ? `${r.hr}<span class="vital-unit">bpm</span>` : `—<span class="vital-unit">bpm</span>`;
   rrEl.innerHTML = r.rr != null ? `${r.rr}<span class="vital-unit">rpm</span>` : `—<span class="vital-unit">rpm</span>`;
-  document.getElementById('ruview-status').textContent = presence ? '🟢 Motion / Presence detected' : '⚫ Room appears empty';
-  document.getElementById('ruview-updated').textContent = r.updated ? 'Updated: ' + r.updated.replace('T',' ').slice(0,19) : '';
+  document.getElementById('ruview-status').textContent = presence ? '🟢 Presence detected' : '⚫ Room appears empty';
+  if (r.updated) {
+    const d = typeof r.updated === 'number' ? new Date(r.updated * 1000) : new Date(String(r.updated).replace('T',' '));
+    document.getElementById('ruview-updated').textContent = 'Updated: ' + d.toLocaleTimeString();
+  } else {
+    document.getElementById('ruview-updated').textContent = '';
+  }
 }
 
 async function fetchEvents() {

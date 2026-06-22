@@ -26,13 +26,13 @@ if ($type === 'status') {
     // Upsert — keep only latest per node
     $stmt = $pdo->prepare('DELETE FROM lab_status WHERE node_id=?');
     $stmt->execute([$node]);
-    $stmt = $pdo->prepare('INSERT INTO lab_status (node_id, payload, pushed_at) VALUES (?,?,NOW())');
+    $stmt = $pdo->prepare('INSERT INTO lab_status (node_id, payload, pushed_at) VALUES (?,?,UTC_TIMESTAMP())');
     $stmt->execute([$node, $body]);
     echo json_encode(['ok'=>true,'stored'=>'status']);
 
 } elseif ($type === 'event') {
     $etype = preg_replace('/[^a-z0-9_]/', '', strtolower($data['event_type'] ?? 'unknown'));
-    $stmt = $pdo->prepare('INSERT INTO lab_events (node_id, event_type, payload, created_at) VALUES (?,?,?,NOW())');
+    $stmt = $pdo->prepare('INSERT INTO lab_events (node_id, event_type, payload, created_at) VALUES (?,?,?,UTC_TIMESTAMP())');
     $stmt->execute([$node, $etype, $body]);
     // Keep only last 500 events per node
     $pdo->prepare('DELETE FROM lab_events WHERE node_id=? AND id NOT IN (SELECT id FROM (SELECT id FROM lab_events WHERE node_id=? ORDER BY id DESC LIMIT 500) t)')->execute([$node, $node]);

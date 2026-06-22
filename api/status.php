@@ -24,7 +24,7 @@ if (!$row) {
     exit;
 }
 
-$age  = (time() - strtotime($row['pushed_at']));
+$age  = (time() - strtotime($row['pushed_at'] . ' UTC'));
 $data = json_decode($row['payload'], true);
 
 echo json_encode([
