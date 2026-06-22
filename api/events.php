@@ -9,16 +9,23 @@ if (!is_logged_in()) { http_response_code(401); echo json_encode(['ok'=>false]);
 
 $pdo     = db_connect();
 $user_id = (int)($_SESSION['user_id'] ?? 0);
-$node    = preg_replace('/[^a-z0-9_-]/', '', strtolower($_GET['node'] ?? 'nox'));
+$node    = isset($_GET['node']) ? preg_replace('/[^a-z0-9_-]/', '', strtolower($_GET['node'])) : '';
 $type    = preg_replace('/[^a-z0-9_]/', '', strtolower($_GET['type'] ?? ''));
 $limit   = min((int)($_GET['limit'] ?? 50), 200);
 
-if ($type) {
+// If node specified, filter by it; otherwise return all nodes for this user
+if ($node && $type) {
     $stmt = $pdo->prepare('SELECT event_type, payload, created_at FROM lab_events WHERE node_id=? AND user_id=? AND event_type=? ORDER BY id DESC LIMIT ?');
     $stmt->execute([$node, $user_id, $type, $limit]);
-} else {
+} elseif ($node) {
     $stmt = $pdo->prepare('SELECT event_type, payload, created_at FROM lab_events WHERE node_id=? AND user_id=? ORDER BY id DESC LIMIT ?');
     $stmt->execute([$node, $user_id, $limit]);
+} elseif ($type) {
+    $stmt = $pdo->prepare('SELECT event_type, payload, created_at FROM lab_events WHERE user_id=? AND event_type=? ORDER BY id DESC LIMIT ?');
+    $stmt->execute([$user_id, $type, $limit]);
+} else {
+    $stmt = $pdo->prepare('SELECT event_type, payload, created_at FROM lab_events WHERE user_id=? ORDER BY id DESC LIMIT ?');
+    $stmt->execute([$user_id, $limit]);
 }
 
 $events = [];

@@ -12,12 +12,17 @@ if (!is_logged_in()) { http_response_code(401); echo json_encode(['ok'=>false,'e
 
 $pdo     = db_connect();
 $user_id = (int)($_SESSION['user_id'] ?? 0);
-$node    = $_GET['node'] ?? 'nox';
-$node    = preg_replace('/[^a-z0-9_-]/', '', strtolower($node));
+$node    = isset($_GET['node']) ? preg_replace('/[^a-z0-9_-]/', '', strtolower($_GET['node'])) : '';
 
 // Latest status — scoped to the logged-in user
-$stmt = $pdo->prepare('SELECT payload, pushed_at FROM lab_status WHERE node_id=? AND user_id=? LIMIT 1');
-$stmt->execute([$node, $user_id]);
+// If no specific node requested, return the most recently pushed node
+if ($node) {
+    $stmt = $pdo->prepare('SELECT node_id, payload, pushed_at FROM lab_status WHERE node_id=? AND user_id=? LIMIT 1');
+    $stmt->execute([$node, $user_id]);
+} else {
+    $stmt = $pdo->prepare('SELECT node_id, payload, pushed_at FROM lab_status WHERE user_id=? ORDER BY pushed_at DESC LIMIT 1');
+    $stmt->execute([$user_id]);
+}
 $row  = $stmt->fetch();
 
 if (!$row) {
@@ -30,8 +35,8 @@ $data = json_decode($row['payload'], true);
 
 echo json_encode([
     'ok'        => true,
-    'connected' => $age < 300,   // stale if > 5 min
-    'node'      => $node,
+    'connected' => $age < 300,
+    'node'      => $row['node_id'],
     'last_push' => $row['pushed_at'],
     'age_sec'   => $age,
     'data'      => $data,

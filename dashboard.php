@@ -561,7 +561,7 @@ function toast(msg, type='info', ico='ℹ️') {
 // ── Main fetch ─────────────────────────────────────────────────────────────
 async function fetchStatus() {
   try {
-    const r = await fetch('/api/status.php?node=nox', {credentials:'include'});
+    const r = await fetch('/api/status.php', {credentials:'include'});
     if (r.status === 403) {
       document.getElementById('nodeLabel').textContent = 'No access';
       document.getElementById('syncLabel').textContent = 'Admin only';
@@ -784,7 +784,7 @@ function renderRuView(r) {
 
 async function fetchEvents() {
   try {
-    const r = await fetch('/api/events.php?node=nox&limit=30', {credentials:'include'});
+    const r = await fetch('/api/events.php?limit=30', {credentials:'include'});
     const d = await r.json();
     if (!d.ok||!d.events?.length) return;
     // Toast on new events
