@@ -3,6 +3,15 @@ require_once __DIR__ . '/auth/db_config.php';
 require_login();
 $username = htmlspecialchars($_SESSION['username'] ?? 'Operator');
 $plan     = $_SESSION['plan'] ?? 'free';
+// Fetch push_token for setup panel
+$_push_token = '';
+try {
+    $pdo_d = db_connect();
+    $st = $pdo_d->prepare('SELECT push_token FROM users WHERE id=? LIMIT 1');
+    $st->execute([(int)($_SESSION['user_id'] ?? 0)]);
+    $row_d = $st->fetch();
+    $_push_token = $row_d['push_token'] ?? '';
+} catch(Exception $e) { $_push_token = ''; }
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -204,6 +213,7 @@ nav a .nav-badge{position:absolute;right:12px;background:var(--red);color:#fff;f
     <div class="nav-sep"></div>
     <span class="nav-section">Communications</span>
     <a href="#" data-panel="webmail"><span class="ico">📧</span>Webmail</a>
+    <a href="#" data-panel="setup"><span class="ico">🔑</span>Setup / Token</a>
   </nav>
   <div class="sidebar-footer">
     <div><?= htmlspecialchars($username) ?> · <?= strtoupper($plan) ?></div>
@@ -421,6 +431,72 @@ nav a .nav-badge{position:absolute;right:12px;background:var(--red);color:#fff;f
       </div>
     </div>
 
+    <!-- SETUP / PUSH TOKEN -->
+    <div class="panel" id="panel-setup">
+      <div style="margin-bottom:18px;">
+        <div style="font-size:.8rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;">Agent Setup &amp; Push Token</div>
+        <div style="font-size:.7rem;color:var(--muted);">Connect your network node to this dashboard via the push daemon.</div>
+      </div>
+
+      <div style="margin-bottom:18px;padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;">
+        <div style="font-size:.7rem;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Your Push Token</div>
+        <?php if ($_push_token): ?>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <code id="pushTokenVal" style="font-size:.75rem;color:var(--cyan);background:var(--bg);padding:8px 14px;border-radius:5px;border:1px solid var(--border);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><?= htmlspecialchars($_push_token) ?></code>
+          <button class="btn-sm" onclick="copyToken()">Copy</button>
+        </div>
+        <div style="font-size:.65rem;color:var(--muted);margin-top:6px;">Keep this secret — it authenticates your node to the dashboard.</div>
+        <?php else: ?>
+        <div style="color:var(--muted);font-size:.75rem;">No token assigned. Contact admin.</div>
+        <?php endif; ?>
+      </div>
+
+      <div style="margin-bottom:18px;padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;">
+        <div style="font-size:.7rem;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;">1 — Download the push daemon</div>
+        <div class="term-section" style="margin:0;">
+          <div class="term-bar"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div><div class="term-title-txt">bash</div></div>
+          <div class="term-body" style="padding:12px 16px;font-size:.72rem;line-height:1.7;">
+            <span style="color:var(--muted)"># Download sb_push.py to your machine</span><br>
+            wget https://shadowbridge.store/sb_push.py -O ~/sb_push.py<br>
+            chmod +x ~/sb_push.py<br>
+            pip install aiohttp psutil
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px;padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;">
+        <div style="font-size:.7rem;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;">2 — Configure your token</div>
+        <div class="term-section" style="margin:0;">
+          <div class="term-bar"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div><div class="term-title-txt">sb_push.py — edit these lines</div></div>
+          <div class="term-body" style="padding:12px 16px;font-size:.72rem;line-height:1.7;">
+            PUSH_URL&nbsp;&nbsp;&nbsp;&nbsp;= <span style="color:var(--cyan)">"https://shadowbridge.store/api/push.php"</span><br>
+            PUSH_SECRET = <span style="color:var(--yellow)">"<?= htmlspecialchars($_push_token ?: 'YOUR_TOKEN_HERE') ?>"</span><br>
+            NODE_ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <span style="color:var(--cyan)">"my-node"</span>&nbsp;&nbsp;<span style="color:var(--muted)"># unique name for your machine</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px;padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;">
+        <div style="font-size:.7rem;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;">3 — Run / Auto-start</div>
+        <div class="term-section" style="margin:0;">
+          <div class="term-bar"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div><div class="term-title-txt">bash</div></div>
+          <div class="term-body" style="padding:12px 16px;font-size:.72rem;line-height:1.7;">
+            <span style="color:var(--muted)"># Run once to test</span><br>
+            python3 ~/sb_push.py --once<br><br>
+            <span style="color:var(--muted)"># Auto-push every minute via cron</span><br>
+            <span style="color:var(--muted)"># Add to crontab: crontab -e</span><br>
+            */1 * * * * python3 ~/sb_push.py --once &gt;&gt; /tmp/sb-push.log 2&gt;&amp;1
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:14px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:.7rem;color:var(--muted);">
+        <strong style="color:var(--fg)">Services monitored:</strong> Any HTTP service with a <code>/health</code> endpoint on your node will appear on the Dashboard.<br>
+        <strong style="color:var(--fg)">Machines:</strong> List your lab machines in <code>LAB_MACHINES</code> — online/offline status tracked via ping.<br>
+        <strong style="color:var(--fg)">Multi-tenant:</strong> Your data is isolated — only you can see your node's status.
+      </div>
+    </div>
+
   </div>
 </div>
 </div>
@@ -443,6 +519,12 @@ const SERVICES = [
 let lastEventCount = 0;
 let lastAlertsToday = 0;
 
+function copyToken() {
+  const val = document.getElementById('pushTokenVal');
+  if (!val) return;
+  navigator.clipboard.writeText(val.textContent.trim()).then(() => toast('Token copied!', 'success', '✅'));
+}
+
 // ── Toast ──────────────────────────────────────────────────────────────────
 function toast(msg, type='info', ico='ℹ️') {
   const c = document.getElementById('toastContainer');
@@ -457,6 +539,13 @@ function toast(msg, type='info', ico='ℹ️') {
 async function fetchStatus() {
   try {
     const r = await fetch('/api/status.php?node=nox', {credentials:'include'});
+    if (r.status === 403) {
+      document.getElementById('nodeLabel').textContent = 'No access';
+      document.getElementById('syncLabel').textContent = 'Admin only';
+      document.getElementById('nodeDot').className = 'dot offline';
+      document.getElementById('syncDot').className = 'dot offline';
+      return;
+    }
     const d = await r.json();
     if (!d.ok) return;
     updateNode(d);

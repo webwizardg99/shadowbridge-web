@@ -10,13 +10,14 @@ require_once __DIR__ . '/../auth/db_config.php';
 session_start_secure();
 if (!is_logged_in()) { http_response_code(401); echo json_encode(['ok'=>false,'error'=>'Unauthorized']); exit; }
 
-$pdo  = db_connect();
-$node = $_GET['node'] ?? 'nox';
-$node = preg_replace('/[^a-z0-9_-]/', '', strtolower($node));
+$pdo     = db_connect();
+$user_id = (int)($_SESSION['user_id'] ?? 0);
+$node    = $_GET['node'] ?? 'nox';
+$node    = preg_replace('/[^a-z0-9_-]/', '', strtolower($node));
 
-// Latest status
-$stmt = $pdo->prepare('SELECT payload, pushed_at FROM lab_status WHERE node_id=? LIMIT 1');
-$stmt->execute([$node]);
+// Latest status — scoped to the logged-in user
+$stmt = $pdo->prepare('SELECT payload, pushed_at FROM lab_status WHERE node_id=? AND user_id=? LIMIT 1');
+$stmt->execute([$node, $user_id]);
 $row  = $stmt->fetch();
 
 if (!$row) {

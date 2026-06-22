@@ -4,6 +4,7 @@ header('Content-Type: application/json');
 require_once __DIR__ . '/../auth/db_config.php';
 session_start_secure();
 if (!is_logged_in()) { http_response_code(401); echo json_encode(['ok'=>false]); exit; }
+if (!is_admin())     { http_response_code(403); echo json_encode(['ok'=>false,'error'=>'Access denied']); exit; }
 
 $body = json_decode(file_get_contents('php://input'), true);
 $msg  = trim($body['message'] ?? '');

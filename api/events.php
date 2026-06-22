@@ -7,17 +7,18 @@ require_once __DIR__ . '/../auth/db_config.php';
 session_start_secure();
 if (!is_logged_in()) { http_response_code(401); echo json_encode(['ok'=>false]); exit; }
 
-$pdo   = db_connect();
-$node  = preg_replace('/[^a-z0-9_-]/', '', strtolower($_GET['node'] ?? 'nox'));
-$type  = preg_replace('/[^a-z0-9_]/', '', strtolower($_GET['type'] ?? ''));
-$limit = min((int)($_GET['limit'] ?? 50), 200);
+$pdo     = db_connect();
+$user_id = (int)($_SESSION['user_id'] ?? 0);
+$node    = preg_replace('/[^a-z0-9_-]/', '', strtolower($_GET['node'] ?? 'nox'));
+$type    = preg_replace('/[^a-z0-9_]/', '', strtolower($_GET['type'] ?? ''));
+$limit   = min((int)($_GET['limit'] ?? 50), 200);
 
 if ($type) {
-    $stmt = $pdo->prepare('SELECT event_type, payload, created_at FROM lab_events WHERE node_id=? AND event_type=? ORDER BY id DESC LIMIT ?');
-    $stmt->execute([$node, $type, $limit]);
+    $stmt = $pdo->prepare('SELECT event_type, payload, created_at FROM lab_events WHERE node_id=? AND user_id=? AND event_type=? ORDER BY id DESC LIMIT ?');
+    $stmt->execute([$node, $user_id, $type, $limit]);
 } else {
-    $stmt = $pdo->prepare('SELECT event_type, payload, created_at FROM lab_events WHERE node_id=? ORDER BY id DESC LIMIT ?');
-    $stmt->execute([$node, $limit]);
+    $stmt = $pdo->prepare('SELECT event_type, payload, created_at FROM lab_events WHERE node_id=? AND user_id=? ORDER BY id DESC LIMIT ?');
+    $stmt->execute([$node, $user_id, $limit]);
 }
 
 $events = [];
