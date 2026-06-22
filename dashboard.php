@@ -247,7 +247,9 @@ nav a .nav-badge{position:absolute;right:12px;background:var(--red);color:#fff;f
     <!-- MACHINES -->
     <div class="panel" id="panel-machines">
       <div class="machine-grid" id="machineGrid">
-        <div class="empty-state"><div class="ico">🖥</div><p>Waiting for NOX Lab data push…<br><br>Start the push daemon on your NOX node.</p></div>
+        <div class="empty-state"><div class="ico">🖥</div><p>No machines detected yet.</p>
+          <p style="margin-top:10px;font-size:.7rem;color:var(--muted)">Run <code>sb_push.py</code> on your node — see <a href="#" onclick="document.querySelector('[data-panel=setup]').click();return false;" style="color:var(--cyan)">Setup / Token</a> for instructions.</p>
+        </div>
       </div>
     </div>
 

@@ -30,7 +30,7 @@ $data = json_decode($row['payload'], true);
 
 echo json_encode([
     'ok'        => true,
-    'connected' => $age < 120,   // stale if > 2 min
+    'connected' => $age < 300,   // stale if > 5 min
     'node'      => $node,
     'last_push' => $row['pushed_at'],
     'age_sec'   => $age,
