@@ -293,15 +293,53 @@ nav a .ico{width:16px;text-align:center;font-size:.85rem;}
 
     <!-- WEBMAIL -->
     <div class="panel" id="panel-webmail">
-      <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap;">
-        <div style="font-size:.72rem;color:var(--muted);">
-          <strong style="color:var(--cyan)">security@shadowbridge.store</strong>
-          &nbsp;·&nbsp;
-          <strong style="color:var(--cyan)">info@shadowbridge.store</strong>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="font-size:.8rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;">Email Accounts</div>
+          <div style="font-size:.7rem;color:var(--muted);">shadowbridge.store · Powered by Roundcube</div>
         </div>
-        <a href="https://webmail.shadowbridge.store" target="_blank" class="btn-sm" style="text-decoration:none;margin-left:auto;">Open in new tab ↗</a>
+        <a href="https://webmail.shadowbridge.store" target="_blank"
+           style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--cyan);color:#000;border-radius:6px;text-decoration:none;font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;">
+          📧 Open Webmail ↗
+        </a>
       </div>
-      <iframe src="https://webmail.shadowbridge.store" class="webmail-frame" title="Webmail"></iframe>
+      <div id="mailAccountGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:20px;">
+        <div style="padding:24px;text-align:center;color:var(--muted);font-size:.72rem;" class="pulsing">Loading accounts…</div>
+      </div>
+      <!-- Webmail shortcuts -->
+      <div class="term-section">
+        <div class="term-bar"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div><div class="term-title-txt">Quick Access</div></div>
+        <div class="term-body" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px;">
+          <a href="https://webmail.shadowbridge.store/?_user=security&_domain=shadowbridge.store" target="_blank"
+             style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:.15s;"
+             onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='var(--border)'">
+            <span style="font-size:1.2rem;">🔐</span>
+            <div><div style="font-size:.75rem;font-weight:700;color:var(--fg)">security@</div><div style="font-size:.65rem;color:var(--muted)">shadowbridge.store</div></div>
+            <span style="margin-left:auto;font-size:.65rem;color:var(--cyan)">Open ↗</span>
+          </a>
+          <a href="https://webmail.shadowbridge.store/?_user=info&_domain=shadowbridge.store" target="_blank"
+             style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:.15s;"
+             onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='var(--border)'">
+            <span style="font-size:1.2rem;">ℹ️</span>
+            <div><div style="font-size:.75rem;font-weight:700;color:var(--fg)">info@</div><div style="font-size:.65rem;color:var(--muted)">shadowbridge.store</div></div>
+            <span style="margin-left:auto;font-size:.65rem;color:var(--cyan)">Open ↗</span>
+          </a>
+          <a href="https://webmail.shadowbridge.store/?_user=nox&_domain=shadowbridge.store" target="_blank"
+             style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:.15s;"
+             onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='var(--border)'">
+            <span style="font-size:1.2rem;">⚡</span>
+            <div><div style="font-size:.75rem;font-weight:700;color:var(--fg)">nox@</div><div style="font-size:.65rem;color:var(--muted)">shadowbridge.store</div></div>
+            <span style="margin-left:auto;font-size:.65rem;color:var(--cyan)">Open ↗</span>
+          </a>
+          <a href="https://webmail.shadowbridge.store/?_user=hello&_domain=shadowbridge.store" target="_blank"
+             style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:.15s;"
+             onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='var(--border)'">
+            <span style="font-size:1.2rem;">👋</span>
+            <div><div style="font-size:.75rem;font-weight:700;color:var(--fg)">hello@</div><div style="font-size:.65rem;color:var(--muted)">shadowbridge.store</div></div>
+            <span style="margin-left:auto;font-size:.65rem;color:var(--cyan)">Open ↗</span>
+          </a>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -489,6 +527,37 @@ async function sendChat() {
   msgs.scrollTop = msgs.scrollHeight;
 }
 
+async function fetchMailAccounts() {
+  try {
+    const r = await fetch('/api/mail.php', {credentials:'include'});
+    const d = await r.json();
+    if (!d.ok || !d.accounts?.length) return;
+    const grid = document.getElementById('mailAccountGrid');
+    grid.innerHTML = d.accounts.map(a => {
+      const pct = a.disk_pct || 0;
+      const barColor = pct > 80 ? 'var(--red)' : pct > 50 ? 'var(--orange)' : 'var(--cyan2)';
+      const lastLogin = a.last_login ? `Last activity: ${a.last_login}` : 'No activity yet';
+      return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <span style="font-size:.78rem;font-weight:700;color:var(--cyan)">${a.email}</span>
+          ${a.suspended ? '<span style="font-size:.62rem;color:var(--red);border:1px solid var(--red);padding:1px 6px;border-radius:3px;">SUSPENDED</span>' : '<span style="font-size:.62rem;color:var(--cyan2);border:1px solid rgba(0,255,157,.3);padding:1px 6px;border-radius:3px;">ACTIVE</span>'}
+        </div>
+        <div style="font-size:.68rem;color:var(--muted);margin-bottom:8px;">${lastLogin}</div>
+        <div style="display:flex;justify-content:space-between;font-size:.68rem;color:var(--muted);margin-bottom:4px;">
+          <span>Storage</span><span>${a.disk_used} / ${a.disk_quota}</span>
+        </div>
+        <div style="height:3px;background:var(--surface2);border-radius:2px;">
+          <div style="height:100%;border-radius:2px;background:${barColor};width:${Math.max(pct,1)}%;transition:width .5s;"></div>
+        </div>
+        <div style="margin-top:10px;">
+          <a href="https://webmail.shadowbridge.store/?_user=${a.user}&_domain=shadowbridge.store" target="_blank"
+             style="font-size:.68rem;color:var(--cyan);text-decoration:none;">Open inbox ↗</a>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {}
+}
+
 document.querySelectorAll('nav a[data-panel]').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
@@ -497,6 +566,7 @@ document.querySelectorAll('nav a[data-panel]').forEach(a => {
     a.classList.add('active');
     document.getElementById('panel-'+a.dataset.panel).classList.add('active');
     document.getElementById('pageTitle').textContent = a.textContent.trim();
+    if (a.dataset.panel === 'webmail') fetchMailAccounts();
   });
 });
 
