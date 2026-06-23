@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ShadowBridge — Download Node Agent</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<meta name="description" content="Download the ShadowBridge Node Agent for Windows, Linux, and Debian/Ubuntu. Connect your machine to the ShadowBridge cybersecurity monitoring platform.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060810;--surface:#0d1117;--surface2:#111827;--surface3:#1a2235;
+  --border:#1e2738;--border2:#2a3a50;
+  --fg:#e2e8f0;--muted:#6b7280;--muted2:#4b5563;
+  --cyan:#00d4ff;--cyan2:#00ff9d;--red:#ff3b5c;--orange:#ff9500;
+  --purple:#a855f7;--yellow:#fbbf24;--green:#22c55e;
+  --font:'SF Mono','Fira Code','Consolas',monospace;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:14px;line-height:1.6;}
+a{color:var(--cyan);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:18px 40px;display:flex;align-items:center;gap:16px;}
+.header .brand{font-size:.9rem;font-weight:700;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;}
+.header .sep{color:var(--border2);}
+.header .title{font-size:.8rem;color:var(--muted);letter-spacing:1px;}
+.header a.back{margin-left:auto;font-size:.72rem;color:var(--muted);border:1px solid var(--border);padding:6px 14px;border-radius:5px;transition:.15s;}
+.header a.back:hover{color:var(--cyan);border-color:var(--cyan);text-decoration:none;}
+
+.wrap{max-width:960px;margin:0 auto;padding:40px 24px 80px;}
+
+.hero{text-align:center;padding:52px 0 44px;}
+.hero h1{font-size:1.8rem;font-weight:700;letter-spacing:1px;margin-bottom:12px;}
+.hero h1 span{color:var(--cyan);}
+.hero p{font-size:.82rem;color:var(--muted);max-width:560px;margin:0 auto 20px;}
+.badge{display:inline-block;background:var(--surface2);border:1px solid var(--border2);color:var(--green);font-size:.65rem;padding:4px 12px;border-radius:20px;letter-spacing:1px;}
+
+/* Platform cards grid */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:48px;}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 24px;transition:.2s;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--border2);}
+.card.featured::before{background:linear-gradient(90deg,var(--cyan),var(--cyan2));}
+.card.win::before{background:linear-gradient(90deg,#0078d4,#00bcf2);}
+.card.deb::before{background:linear-gradient(90deg,var(--orange),var(--yellow));}
+.card:hover{border-color:var(--border2);transform:translateY(-2px);}
+
+.card-icon{font-size:2rem;margin-bottom:14px;}
+.card-platform{font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.card-name{font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--fg);}
+.card-desc{font-size:.72rem;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+.tag{font-size:.6rem;background:var(--surface2);border:1px solid var(--border2);padding:3px 8px;border-radius:4px;color:var(--muted);}
+.tag.ai{color:var(--purple);border-color:var(--purple);}
+.tag.new{color:var(--cyan);border-color:var(--cyan);}
+
+.dl-btn{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:12px 16px;transition:.2s;cursor:pointer;text-decoration:none;color:var(--fg);width:100%;}
+.dl-btn:hover{border-color:var(--cyan);color:var(--cyan);text-decoration:none;}
+.dl-btn .ico{font-size:1.1rem;}
+.dl-btn .info{flex:1;}
+.dl-btn .fname{font-size:.75rem;font-weight:700;}
+.dl-btn .fsize{font-size:.62rem;color:var(--muted);}
+.dl-btn .arrow{color:var(--muted);font-size:.8rem;}
+.dl-btn:hover .arrow{color:var(--cyan);}
+
+/* AI section */
+.ai-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;margin-bottom:48px;}
+.ai-section h2{font-size:1rem;font-weight:700;color:var(--purple);margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.ai-section .sub{font-size:.75rem;color:var(--muted);margin-bottom:24px;}
+
+.ai-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
+.ai-card{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:16px;}
+.ai-card .ai-name{font-size:.78rem;font-weight:700;margin-bottom:4px;}
+.ai-card .ai-desc{font-size:.68rem;color:var(--muted);margin-bottom:10px;line-height:1.5;}
+.ai-card .ai-cmd{background:#000;border:1px solid var(--border2);border-radius:5px;padding:8px 12px;font-size:.68rem;color:var(--green);margin-bottom:8px;word-break:break-all;}
+.ai-card .ai-uses{display:flex;flex-wrap:wrap;gap:4px;}
+.ai-card .ai-use{font-size:.58rem;background:var(--surface);border:1px solid var(--border2);padding:2px 6px;border-radius:3px;color:var(--muted);}
+
+.ai-note{font-size:.68rem;color:var(--muted2);margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
+
+/* Steps */
+.steps-section h2{font-size:1rem;font-weight:700;margin-bottom:20px;color:var(--fg);}
+.step{display:flex;gap:16px;margin-bottom:20px;}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--cyan);color:#000;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.step-content .step-title{font-size:.8rem;font-weight:700;margin-bottom:4px;}
+.step-content .step-desc{font-size:.72rem;color:var(--muted);}
+.step-content a{color:var(--cyan);}
+
+.term{background:#000;border:1px solid var(--border2);border-radius:8px;overflow:hidden;margin:10px 0;}
+.term-bar{background:#1a1a2e;padding:8px 14px;display:flex;align-items:center;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot.r{background:#ff5f57;}.dot.y{background:#febc2e;}.dot.g{background:#28c840;}
+.term-label{margin-left:8px;font-size:.65rem;color:var(--muted);letter-spacing:.5px;}
+.term-body{padding:14px 18px;font-size:.72rem;line-height:2;}
+.cmd{color:#fff;} .cmt{color:#4b5563;} .out{color:var(--green);} .hi{color:var(--cyan);}
+
+.version-bar{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;font-size:.72rem;}
+.version-bar .ver{color:var(--cyan);font-weight:700;}
+.version-bar .meta{color:var(--muted);}
+.version-bar a{color:var(--muted);font-size:.65rem;border:1px solid var(--border2);padding:4px 10px;border-radius:4px;}
+.version-bar a:hover{color:var(--cyan);border-color:var(--cyan);text-decoration:none;}
+
+footer{text-align:center;padding:40px 20px;border-top:1px solid var(--border);color:var(--muted2);font-size:.68rem;}
+footer a{color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="brand">ShadowBridge</span>
+  <span class="sep">/</span>
+  <span class="title">DOWNLOAD</span>
+  <a class="back" href="/">← Home</a>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Download <span>Node Agent</span></h1>
+    <p>Connect your machine to the ShadowBridge cybersecurity monitoring platform. Real-time metrics, push-based telemetry, AI-powered analysis.</p>
+    <span class="badge">v1.0.0 — STABLE</span>
+  </div>
+
+  <!-- Version bar -->
+  <div class="version-bar">
+    <div>
+      <span class="ver">v1.0.0</span>
+      <span class="meta"> &nbsp;·&nbsp; Released 2026-06-23 &nbsp;·&nbsp; NOX Lab</span>
+    </div>
+    <a href="https://github.com/webwizardg99/shadowbridge-web/releases/tag/v1.0.0" target="_blank">All releases →</a>
+  </div>
+
+  <!-- Download cards -->
+  <div class="cards">
+
+    <!-- Linux Desktop App -->
+    <div class="card featured">
+      <div class="card-icon">🐧</div>
+      <div class="card-platform">Linux</div>
+      <div class="card-name">Desktop App</div>
+      <div class="card-desc">System tray agent with live stats panel, token setup wizard, and built-in AI installation guide. Recommended for desktop users.</div>
+      <div class="tags">
+        <span class="tag new">RECOMMENDED</span>
+        <span class="tag ai">AI Setup included</span>
+        <span class="tag">System tray</span>
+        <span class="tag">x86-64</span>
+      </div>
+      <a class="dl-btn" href="https://github.com/webwizardg99/shadowbridge-web/releases/download/v1.0.0/shadowbridge-app">
+        <span class="ico">⬇</span>
+        <div class="info">
+          <div class="fname">shadowbridge-app</div>
+          <div class="fsize">Linux binary · ~269 MB · No Python required</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Windows -->
+    <div class="card win">
+      <div class="card-icon">🪟</div>
+      <div class="card-platform">Windows</div>
+      <div class="card-name">Setup Installer</div>
+      <div class="card-desc">Setup wizard for Windows. Asks for your push token, installs to Program Files, creates a scheduled task to run every minute automatically.</div>
+      <div class="tags">
+        <span class="tag">Setup wizard</span>
+        <span class="tag">Scheduled task</span>
+        <span class="tag">Python 3.8+ required</span>
+      </div>
+      <a class="dl-btn" href="https://github.com/webwizardg99/shadowbridge-web/releases/download/v1.0.0/shadowbridge-setup.exe">
+        <span class="ico">⬇</span>
+        <div class="info">
+          <div class="fname">shadowbridge-setup.exe</div>
+          <div class="fsize">Windows installer · 176 KB</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Linux .deb -->
+    <div class="card deb">
+      <div class="card-icon">📦</div>
+      <div class="card-platform">Debian / Ubuntu</div>
+      <div class="card-name">.deb Package</div>
+      <div class="card-desc">Proper Debian package with systemd service integration. Installs with dpkg, runs as a user service, asks for token on first install.</div>
+      <div class="tags">
+        <span class="tag">systemd service</span>
+        <span class="tag">dpkg install</span>
+        <span class="tag">Python 3 required</span>
+      </div>
+      <a class="dl-btn" href="https://github.com/webwizardg99/shadowbridge-web/releases/download/v1.0.0/shadowbridge_1.0.0_all.deb">
+        <span class="ico">⬇</span>
+        <div class="info">
+          <div class="fname">shadowbridge_1.0.0_all.deb</div>
+          <div class="fsize">Debian package · 4.3 KB</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Linux CLI agent -->
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-platform">Linux</div>
+      <div class="card-name">CLI Agent</div>
+      <div class="card-desc">Minimal standalone binary for servers and headless machines. No GUI, no systemd — run with cron or as a background process.</div>
+      <div class="tags">
+        <span class="tag">Headless / server</span>
+        <span class="tag">Cron compatible</span>
+        <span class="tag">x86-64</span>
+      </div>
+      <a class="dl-btn" href="https://github.com/webwizardg99/shadowbridge-web/releases/download/v1.0.0/shadowbridge">
+        <span class="ico">⬇</span>
+        <div class="info">
+          <div class="fname">shadowbridge</div>
+          <div class="fsize">Linux binary · 8.9 MB · No Python required</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Quick setup -->
+  <div class="steps-section" style="margin-bottom:48px;">
+    <h2>Quick Setup</h2>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Get your push token</div>
+        <div class="step-desc">Login at <a href="/dashboard">shadowbridge.store/dashboard</a> → click <strong>Setup / Token</strong> panel → copy your token.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Download and run</div>
+        <div class="term">
+          <div class="term-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="term-label">Linux — desktop app</span></div>
+          <div class="term-body">
+            <span class="cmd">wget https://github.com/webwizardg99/shadowbridge-web/releases/download/v1.0.0/shadowbridge-app</span><br>
+            <span class="cmd">chmod +x shadowbridge-app</span><br>
+            <span class="cmd">./shadowbridge-app</span><br>
+            <span class="out">⬡ ShadowBridge tray icon appears in taskbar</span>
+          </div>
+        </div>
+        <div class="term">
+          <div class="term-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="term-label">Linux — CLI / server</span></div>
+          <div class="term-body">
+            <span class="cmd">chmod +x shadowbridge && ./shadowbridge --setup</span><br>
+            <span class="out">Token saved. Node connected.</span><br>
+            <span class="cmt"># Add to cron (push every minute):</span><br>
+            <span class="cmd">echo '*/1 * * * * /path/to/shadowbridge --once' | crontab -</span>
+          </div>
+        </div>
+        <div class="term">
+          <div class="term-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="term-label">Linux .deb</span></div>
+          <div class="term-body">
+            <span class="cmd">sudo dpkg -i shadowbridge_1.0.0_all.deb</span><br>
+            <span class="out">Enter your push token: <span class="hi">_</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Your node appears on the dashboard</div>
+        <div class="step-desc">Real-time CPU, RAM, disk and network stats push every 60 seconds. View at <a href="/dashboard">shadowbridge.store/dashboard</a>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Features -->
+  <div class="ai-section">
+    <h2>⚡ AI Features — Optional</h2>
+    <div class="sub">Install <a href="https://ollama.com/download" target="_blank">Ollama</a> and pull the models below to enable AI-powered platform features.</div>
+
+    <div class="ai-grid">
+
+      <div class="ai-card">
+        <div class="ai-name" style="color:var(--cyan)">Ollama — AI Engine</div>
+        <div class="ai-desc">Required for all AI features. Runs LLM models locally on your machine.</div>
+        <div class="ai-cmd">curl -fsSL https://ollama.com/install.sh | sh</div>
+        <div class="ai-uses">
+          <span class="ai-use">NOX-BRAIN</span><span class="ai-use">HoneyAI</span><span class="ai-use">Dev email AI</span><span class="ai-use">Support bot</span>
+        </div>
+      </div>
+
+      <div class="ai-card">
+        <div class="ai-name" style="color:var(--green)">qwen2.5:3b — Base model</div>
+        <div class="ai-desc">Fast, lightweight (2 GB RAM). Powers the support bot and dev email handler.</div>
+        <div class="ai-cmd">ollama pull qwen2.5:3b</div>
+        <div class="ai-uses">
+          <span class="ai-use">Support bot</span><span class="ai-use">Dev email</span><span class="ai-use">NOX-BRAIN chat</span>
+        </div>
+      </div>
+
+      <div class="ai-card">
+        <div class="ai-name" style="color:var(--green)">qwen2.5:7b — Recommended</div>
+        <div class="ai-desc">More accurate, longer context (4 GB RAM). Recommended for dev email automation.</div>
+        <div class="ai-cmd">ollama pull qwen2.5:7b</div>
+        <div class="ai-uses">
+          <span class="ai-use">Dev email (recommended)</span><span class="ai-use">Threat analysis</span>
+        </div>
+      </div>
+
+      <div class="ai-card">
+        <div class="ai-name" style="color:var(--orange)">webwizardg99/wizz</div>
+        <div class="ai-desc">Custom HoneyAI model — generates realistic SSH shell responses to deceive attackers.</div>
+        <div class="ai-cmd">ollama pull webwizardg99/wizz</div>
+        <div class="ai-uses">
+          <span class="ai-use">HoneyAI SSH honeypot</span>
+        </div>
+      </div>
+
+      <div class="ai-card">
+        <div class="ai-name" style="color:var(--red)">nemotron-mini — OSINT</div>
+        <div class="ai-desc">Large model for multi-agent OSINT pipeline and CVE research. 8+ GB RAM required.</div>
+        <div class="ai-cmd">ollama pull nemotron-mini</div>
+        <div class="ai-uses">
+          <span class="ai-use">NOX Pipeline</span><span class="ai-use">CVE research</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="ai-note">💡 Models download automatically on first use after installation. Internet connection required for initial pull.</div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:8px;">
+    <a href="/">Home</a> &nbsp;·&nbsp;
+    <a href="/setup.html">Setup Guide</a> &nbsp;·&nbsp;
+    <a href="/dashboard">Dashboard</a> &nbsp;·&nbsp;
+    <a href="https://github.com/webwizardg99/shadowbridge-web/releases" target="_blank">GitHub Releases</a>
+  </div>
+  © 2026 ShadowBridge · NOX Lab · shadowbridge.store
+</footer>
+
+</body>
+</html>
