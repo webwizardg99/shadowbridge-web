@@ -15,7 +15,7 @@ $pdo  = db_connect();
 $stmt = $pdo->prepare('SELECT payload FROM lab_status WHERE node_id=? LIMIT 1');
 $stmt->execute(['nox']);
 $row  = $stmt->fetch();
-$endpoint = 'http://192.168.1.101:8484/api/chat'; // fallback direct
+$endpoint = 'http://192.168.1.103:8484/api/chat'; // fallback direct
 if ($row) {
     $d = json_decode($row['payload'], true);
     if (!empty($d['noxbrain_url'])) $endpoint = $d['noxbrain_url'];
