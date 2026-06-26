@@ -8,15 +8,16 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     http_response_code(405); echo json_encode(['ok'=>false,'error'=>'POST only']); exit;
 }
 
-$token = $_SERVER['HTTP_X_NOX_SECRET'] ?? '';
-if (!$token) {
-    http_response_code(403); echo json_encode(['ok'=>false,'error'=>'Missing token']); exit;
-}
-
 $body = file_get_contents('php://input');
 $data = json_decode($body, true);
 if (!$data) {
     http_response_code(400); echo json_encode(['ok'=>false,'error'=>'Invalid JSON']); exit;
+}
+
+// Accept token from X-NOX-SECRET header (new clients) OR JSON body (legacy app v1.0.0)
+$token = $_SERVER['HTTP_X_NOX_SECRET'] ?? $data['token'] ?? '';
+if (!$token) {
+    http_response_code(403); echo json_encode(['ok'=>false,'error'=>'Missing token']); exit;
 }
 
 require_once __DIR__ . '/../auth/db_config.php';
