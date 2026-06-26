@@ -2,11 +2,11 @@
 require_once __DIR__ . '/auth/db_config.php';
 session_start_secure();
 
-if (is_logged_in()) redirect('/dashboard');
+if (is_logged_in()) redirect('/dashboard.php');
 
 $error    = '';
-$redirect = $_GET['redirect'] ?? '/dashboard';
-if (!preg_match('/^\/[a-zA-Z0-9\/_\-]*$/', $redirect)) $redirect = '/dashboard';
+$redirect = $_GET['redirect'] ?? '/dashboard.php';
+if (!preg_match('/^\/[a-zA-Z0-9\/_\-\.]*$/', $redirect)) $redirect = '/dashboard.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $identity = trim($_POST['identity'] ?? '');

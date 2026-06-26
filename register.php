@@ -2,7 +2,7 @@
 require_once __DIR__ . '/auth/db_config.php';
 session_start_secure();
 
-if (is_logged_in()) redirect('/dashboard');
+if (is_logged_in()) redirect('/dashboard.php');
 
 $error   = '';
 $success = '';
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_id']  = $userId;
                 $_SESSION['username'] = $username;
                 $_SESSION['plan']     = $plan;
-                redirect('/dashboard');
+                redirect('/dashboard.php');
             }
         } catch (Exception $e) {
             $error = 'Registration failed. Please try again.';
@@ -110,7 +110,7 @@ footer{text-align:center;padding:24px;color:var(--muted);font-size:.72rem;border
   </a>
   <div class="nav-right">
     <a href="/">Home</a>
-    <a href="/login">Sign in</a>
+    <a href="/login.php">Sign in</a>
   </div>
 </nav>
 
@@ -175,7 +175,7 @@ footer{text-align:center;padding:24px;color:var(--muted);font-size:.72rem;border
     </form>
 
     <div class="signin-link">
-      Already have an account? <a href="/login">Sign in →</a>
+      Already have an account? <a href="/login.php">Sign in →</a>
     </div>
   </div>
 </main>
