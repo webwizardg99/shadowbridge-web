@@ -95,8 +95,14 @@ if (!$contact_id) {
 $deal_data = [
     'associations' => [
         [
-            'types' => [['associationType' => 'contact_to_deal', 'direction' => 'FORWARD']],
-            'id' => $contact_id
+            'id' => $contact_id,
+            'types' => [
+                [
+                    'associationType' => 'contact_to_deal',
+                    'associationCategory' => 'HUBSPOT_DEFINED',
+                    'associationTypeId' => 3
+                ]
+            ]
         ]
     ],
     'properties' => [
@@ -142,8 +148,14 @@ $task_data = [
     ],
     'associations' => [
         [
-            'types' => [['associationType' => 'task_to_contact', 'direction' => 'FORWARD']],
-            'id' => $contact_id
+            'id' => $contact_id,
+            'types' => [
+                [
+                    'associationType' => 'task_to_contact',
+                    'associationCategory' => 'HUBSPOT_DEFINED',
+                    'associationTypeId' => 27
+                ]
+            ]
         ]
     ]
 ];
