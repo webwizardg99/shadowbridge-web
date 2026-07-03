@@ -1,5 +1,7 @@
 # Sensitive config — never commit real credentials
 auth/db_config.php
+.env
+.env.local
 
 # Logs & temp
 *.log
