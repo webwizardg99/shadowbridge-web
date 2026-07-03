@@ -51,9 +51,8 @@ $contact_data = [
         'lastname' => isset(explode(' ', $name)[1]) ? implode(' ', array_slice(explode(' ', $name), 1)) : '',
         'phone' => $phone,
         'company' => $company,
-        'source' => 'shadowbridge_contact_form',
         'hs_lead_status' => 'NEW',
-        'hs_analytics_num_page_views' => '1',
+        'shadowbridge_contact_source' => 'contact_form',
         'shadowbridge_inquiry_message' => $message
     ]
 ];
