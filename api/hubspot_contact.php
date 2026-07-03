@@ -68,6 +68,8 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 ]);
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($contact_data));
 curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
 $contact_response = curl_exec($ch);
 $contact_http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -76,7 +78,7 @@ curl_close($ch);
 if ($contact_http_code !== 200 && $contact_http_code !== 201) {
     error_log("HubSpot contact creation failed: $contact_http_code - $contact_response");
     http_response_code(500);
-    echo json_encode(['ok' => false, 'error' => 'Contact creation failed']);
+    echo json_encode(['ok' => false, 'error' => 'Contact creation failed', 'http_code' => $contact_http_code, 'response' => $contact_response]);
     exit;
 }
 
@@ -117,6 +119,8 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 ]);
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($deal_data));
 curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
 $deal_response = curl_exec($ch);
 $deal_http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -155,6 +159,8 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 ]);
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($task_data));
 curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
 $task_response = curl_exec($ch);
 $task_http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
