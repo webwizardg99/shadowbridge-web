@@ -3,206 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ShadowBridge — Spaceship Command Center</title>
+<title>ShadowBridge — Command Center</title>
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<meta name="description" content="ShadowBridge Cybersecurity Command Center — 3D spaceship interface to full-spectrum security monitoring.">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#060810;
-  --surface:#0d1117;
-  --surface2:#111827;
-  --border:#1e2738;
+  --bg:#0a0a0a;
+  --surface:#1a1a1a;
+  --border:#2a2a2a;
   --fg:#e2e8f0;
   --muted:#6b7280;
-  --cyan:#00d4ff;
-  --cyan2:#00ff9d;
+  --green:#00ff88;
+  --green-dark:#00cc6a;
   --red:#ff3b5c;
   --orange:#ff8c42;
-  --purple:#8b5cf6;
-  --yellow:#fbbf24;
+  --cyan:#00d4ff;
 }
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--fg);font-family:'Segoe UI','Inter',system-ui,sans-serif;line-height:1.6;overflow-x:hidden;}
+body{
+  background:var(--bg);
+  color:var(--green);
+  font-family:'Courier New',monospace;
+  line-height:1.6;
+  overflow-x:hidden;
+}
 
-/* ── SCANLINE OVERLAY ── */
+/* Scanline overlay */
 body::before{
   content:'';position:fixed;top:0;left:0;width:100%;height:100%;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,255,.012) 2px,rgba(0,212,255,.012) 4px);
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,136,.03) 2px,rgba(0,255,136,.03) 4px);
   pointer-events:none;z-index:9999;
 }
 
 /* ── NAV ── */
 nav{
   position:sticky;top:0;z-index:100;
-  background:rgba(6,8,16,.95);backdrop-filter:blur(16px);
-  border-bottom:1px solid rgba(0,212,255,.12);
+  background:rgba(10,10,10,.95);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
   padding:14px 48px;display:flex;align-items:center;justify-content:space-between;
 }
 .nav-logo{
   font-size:1rem;font-weight:800;letter-spacing:4px;text-decoration:none;
-  color:var(--cyan);text-transform:uppercase;display:flex;align-items:center;gap:10px;
-}
-.nav-logo .logo-icon{
-  width:28px;height:28px;border:2px solid var(--cyan);border-radius:6px;
-  display:flex;align-items:center;justify-content:center;font-size:.9rem;
-  box-shadow:0 0 12px rgba(0,212,255,.4);
+  color:var(--green);text-transform:uppercase;display:flex;align-items:center;gap:10px;
+  text-shadow:0 0 10px rgba(0,255,136,.5);
 }
 .nav-links{display:flex;gap:32px;align-items:center;}
 .nav-links a{color:var(--muted);text-decoration:none;font-size:.82rem;letter-spacing:.5px;transition:.2s;text-transform:uppercase;}
-.nav-links a:hover{color:var(--cyan);}
-.btn{display:inline-block;border-radius:4px;padding:8px 22px;font-size:.8rem;font-weight:700;text-decoration:none;cursor:pointer;transition:.2s;border:none;letter-spacing:1px;text-transform:uppercase;}
-.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--cyan2));color:#060810;font-weight:800;}
-.btn-primary:hover{box-shadow:0 0 24px rgba(0,212,255,.5);transform:translateY(-1px);}
-.btn-outline{border:1px solid rgba(0,212,255,.4);color:var(--cyan);background:transparent;}
-.btn-outline:hover{border-color:var(--cyan);background:rgba(0,212,255,.08);box-shadow:0 0 16px rgba(0,212,255,.2);}
+.nav-links a:hover{color:var(--green);}
+.btn{display:inline-block;border-radius:2px;padding:8px 22px;font-size:.8rem;font-weight:700;text-decoration:none;cursor:pointer;transition:.2s;border:1px solid var(--green);letter-spacing:1px;text-transform:uppercase;}
+.btn-primary{background:var(--green);color:#0a0a0a;border:1px solid var(--green);}
+.btn-primary:hover{background:var(--green-dark);box-shadow:0 0 24px rgba(0,255,136,.5);}
+.btn-outline{background:transparent;color:var(--green);border:1px solid var(--green);}
+.btn-outline:hover{background:rgba(0,255,136,.1);box-shadow:0 0 16px rgba(0,255,136,.3);}
 
-/* ── HERO SECTION WITH SPACESHIP ── */
+/* ── HERO SECTION ── */
 .hero-section{
-  position:relative;
-  height:100vh;
+  min-height:100vh;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
-  background:linear-gradient(135deg,#0a0e27 0%,#1a1a3e 50%,#0d1b2a 100%);
+  padding:60px 20px;
+  background:linear-gradient(180deg,#0a0a0a 0%,#1a0a1a 50%,#0a0a0a 100%);
 }
 
-.hero-stars{
-  position:absolute;
-  top:0;left:0;width:100%;height:100%;
-  pointer-events:none;
-  z-index:0;
-}
-
-.star{
-  position:absolute;
-  width:2px;height:2px;
-  background:white;
-  border-radius:50%;
-  opacity:0.6;
-  animation:twinkle 3s infinite;
-}
-
-@keyframes twinkle{
-  0%,100%{opacity:0.3;}
-  50%{opacity:1;}
-}
-
-.spaceship-container{
-  position:relative;
-  width:100%;
-  max-width:1200px;
-  height:500px;
-  perspective:1200px;
-  z-index:10;
-  margin:0 auto;
-}
-
-.spaceship{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translateX(-50%) translateY(-50%) rotateX(15deg) rotateY(-20deg) rotateZ(5deg);
-  width:400px;
-  height:300px;
-  transform-style:preserve-3d;
-  animation:hover 6s ease-in-out infinite;
-}
-
-@keyframes hover{
-  0%,100%{transform:translateX(-50%) translateY(-50%) rotateX(15deg) rotateY(-20deg) rotateZ(5deg);}
-  50%{transform:translateX(-50%) translateY(-70px) rotateX(15deg) rotateY(-20deg) rotateZ(5deg);}
-}
-
-.hull{
-  position:absolute;
-  width:100%;height:100%;
-  background:linear-gradient(135deg,#1a3a52 0%,#0d5a7f 50%,#082a3d 100%);
-  border:2px solid #00ff88;
-  border-radius:50% 50% 30% 30%;
-  box-shadow:0 0 40px rgba(0,255,136,.6),inset 0 0 40px rgba(0,255,136,.2),0 0 80px rgba(0,100,255,.4);
-  transform:translateZ(50px);
-}
-
-.cockpit{
-  position:absolute;
-  top:20%;left:50%;
-  transform:translateX(-50%) translateZ(60px);
-  width:80px;height:80px;
-  background:radial-gradient(circle at 30% 30%,#00ff88,#004d33);
-  border-radius:50%;border:2px solid #00ff88;
-  box-shadow:inset 0 0 20px rgba(0,255,136,.8),0 0 30px rgba(0,255,136,.6);
-}
-
-.scan-line{
-  position:absolute;
-  width:100%;height:2px;
-  background:linear-gradient(90deg,transparent,#00ff88,transparent);
-  top:40%;left:0;
-  animation:scan 3s linear infinite;
-}
-
-@keyframes scan{
-  0%{top:0%;}
-  100%{top:100%;}
-}
-
-.thruster{
-  position:absolute;
-  width:30px;height:60px;
-  background:linear-gradient(180deg,#ff6b00,#ff0000,transparent);
-  border:1px solid #ff6b00;
-  bottom:10%;
-  filter:blur(8px);
-  animation:thrust .6s ease-in-out infinite;
-}
-
-.thruster-left{left:15%;}
-.thruster-right{right:15%;}
-
-@keyframes thrust{
-  0%,100%{height:60px;opacity:0.4;}
-  50%{height:100px;opacity:0.8;}
-}
-
-.hero-overlay{
-  position:absolute;
-  bottom:60px;
-  left:50%;
-  transform:translateX(-50%);
-  width:90%;
-  max-width:600px;
+.hero-header{
   text-align:center;
-  z-index:20;
-  animation:fadeInUp .8s ease-out;
+  margin-bottom:60px;
+  animation:fadeIn 1s ease-out;
 }
 
-@keyframes fadeInUp{
-  from{opacity:0;transform:translateX(-50%) translateY(20px);}
-  to{opacity:1;transform:translateX(-50%) translateY(0);}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(-20px);}
+  to{opacity:1;transform:translateY(0);}
 }
 
-.hero-overlay h1{
+.hero-header h1{
   font-size:clamp(2rem,5vw,3.5rem);
   font-weight:900;
-  margin-bottom:20px;
-  letter-spacing:-1px;
-  text-shadow:0 0 30px rgba(0,212,255,.5);
+  margin-bottom:16px;
+  letter-spacing:2px;
+  text-shadow:0 0 20px rgba(0,255,136,.5);
 }
 
-.hero-overlay .hl-cyan{color:var(--cyan);}
-.hero-overlay .hl-green{color:var(--cyan2);}
+.hero-header .hl-red{color:var(--red);}
+.hero-header .hl-green{color:var(--green);}
 
-.hero-overlay p{
+.hero-header p{
   color:var(--muted);
   font-size:1rem;
   margin-bottom:32px;
-  line-height:1.6;
-  max-width:500px;
+  max-width:600px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -212,19 +103,228 @@ nav{
   gap:14px;
   justify-content:center;
   flex-wrap:wrap;
+  margin-bottom:80px;
 }
 
-.hero-cta .btn{
-  padding:13px 32px;
-  font-size:.88rem;
+/* ── DASHBOARD GRID ── */
+.dashboard{
+  max-width:1200px;
+  width:100%;
+  margin:0 auto;
 }
 
+.dashboard-header{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:16px 20px;
+  margin-bottom:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-size:.85rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.status-indicator{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--green);
+  animation:pulse 2s infinite;
+  box-shadow:0 0 10px var(--green);
+}
+
+@keyframes pulse{
+  0%,100%{opacity:1;}
+  50%{opacity:0.5;}
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:16px;
+  margin-bottom:40px;
+}
+
+.metric-card{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:24px;
+  position:relative;
+  overflow:hidden;
+  transition:.3s;
+}
+
+.metric-card:hover{
+  border-color:var(--green);
+  box-shadow:0 0 20px rgba(0,255,136,.2);
+}
+
+.metric-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;
+  right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+  opacity:0;
+  animation:scan 3s infinite;
+}
+
+@keyframes scan{
+  0%{opacity:0;transform:translateX(-100%);}
+  50%{opacity:1;}
+  100%{opacity:0;transform:translateX(100%);}
+}
+
+.metric-label{
+  font-size:.75rem;
+  color:var(--muted);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  display:block;
+}
+
+.metric-value{
+  font-size:2.5rem;
+  font-weight:900;
+  color:var(--green);
+  margin-bottom:12px;
+  font-variant-numeric:tabular-nums;
+}
+
+.metric-unit{
+  font-size:.9rem;
+  color:var(--muted);
+  display:block;
+  margin-bottom:16px;
+}
+
+.metric-bar{
+  height:4px;
+  background:var(--border);
+  border-radius:2px;
+  overflow:hidden;
+  margin-top:12px;
+}
+
+.metric-bar-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--green),var(--cyan));
+  animation:fillbar 3s ease-in-out infinite;
+  border-radius:2px;
+}
+
+@keyframes fillbar{
+  0%,100%{width:70%;}
+  50%{width:95%;}
+}
+
+.metric-status{
+  font-size:.7rem;
+  color:var(--green);
+  margin-top:12px;
+  letter-spacing:.5px;
+}
+
+/* Terminal section */
+.terminal-section{
+  max-width:1200px;
+  width:100%;
+  margin:60px auto 0;
+  border:1px solid var(--border);
+  background:var(--surface);
+  overflow:hidden;
+}
+
+.terminal-header{
+  border-bottom:1px solid var(--border);
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:.75rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+.terminal-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--orange);
+}
+
+.terminal-body{
+  padding:20px;
+  font-size:.85rem;
+  line-height:1.8;
+  max-height:300px;
+  overflow-y:auto;
+  color:var(--green);
+}
+
+.terminal-line{
+  display:flex;
+  gap:10px;
+  margin-bottom:8px;
+  animation:slideIn .3s ease-out forwards;
+  opacity:0;
+}
+
+.terminal-line:nth-child(1){animation-delay:.1s;}
+.terminal-line:nth-child(2){animation-delay:.2s;}
+.terminal-line:nth-child(3){animation-delay:.3s;}
+.terminal-line:nth-child(4){animation-delay:.4s;}
+.terminal-line:nth-child(5){animation-delay:.5s;}
+
+@keyframes slideIn{
+  from{opacity:0;transform:translateX(-10px);}
+  to{opacity:1;transform:translateX(0);}
+}
+
+.terminal-prompt{color:var(--green);flex-shrink:0;}
+.terminal-cmd{color:var(--fg);}
+.terminal-ok{color:var(--green);}
+.terminal-warn{color:var(--orange);}
+.terminal-danger{color:var(--red);}
+
+.terminal-cursor{
+  display:inline-block;
+  width:8px;
+  height:14px;
+  background:var(--green);
+  animation:blink .8s infinite;
+  vertical-align:text-bottom;
+  margin-left:2px;
+}
+
+@keyframes blink{
+  0%,49%{opacity:1;}
+  50%,100%{opacity:0;}
+}
+
+/* Responsive */
 @media(max-width:768px){
   nav{padding:12px 20px;}
-  .spaceship{transform:translateX(-50%) translateY(-50%) scale(0.7) rotateX(15deg) rotateY(-20deg) rotateZ(5deg);}
-  .spaceship-container{height:350px;}
-  .hero-overlay{bottom:20px;width:95%;}
+  .grid{grid-template-columns:1fr;}
+  .hero-header h1{font-size:1.8rem;}
 }
+
+/* Scrollbar styling */
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:var(--surface);}
+::-webkit-scrollbar-thumb{background:var(--green);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:var(--green-dark);}
 </style>
 </head>
 <body>
@@ -232,86 +332,167 @@ nav{
 <!-- ── NAV ── -->
 <nav>
   <a class="nav-logo" href="/">
-    <div class="logo-icon">◈</div>
-    Shadow<span style="color:var(--fg);">Bridge</span>
+    ◈ Shadow<span style="color:var(--fg);">Bridge</span>
   </a>
   <div class="nav-links">
     <a href="/#modules">Arzenál</a>
     <a href="/#tiers">Cenník</a>
     <a href="/setup.html">Dokumentácia</a>
-    <a href="/" class="btn btn-outline" style="padding:6px 18px;">Späť na web</a>
+    <a href="/" class="btn btn-outline" style="padding:6px 18px;">Späť</a>
   </div>
 </nav>
 
-<!-- ── HERO WITH SPACESHIP ── -->
+<!-- ── HERO ── -->
 <div class="hero-section">
-  <div class="hero-stars" id="stars"></div>
-
-  <div class="spaceship-container">
-    <div class="spaceship" id="spaceship">
-      <div class="hull">
-        <div class="cockpit"></div>
-        <div class="scan-line"></div>
-        <div class="thruster thruster-left"></div>
-        <div class="thruster thruster-right"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="hero-overlay">
+  <div class="hero-header">
     <h1>
-      <span class="hl-cyan">Kompletný</span><br>
-      <span class="hl-green">Kybernetický Arzenál</span>
+      <span class="hl-green">Aktívna</span><br>
+      <span class="hl-red">Detekcia</span> Hrozieb
     </h1>
-    <p>12 integrovaných modulov. 100+ bezpečnostných nástrojov. Jedno velíne. Jednou kliknutím aktivované.</p>
+    <p>12 modulov. 100+ nástrojov. Real-time monitoring.<br>Jeden príkaz. Všetko vidieť.</p>
     <div class="hero-cta">
       <a href="/#tiers" class="btn btn-primary">Začať teraz →</a>
       <a href="/" class="btn btn-outline">Všetky funkcie</a>
     </div>
   </div>
+
+  <!-- ── DASHBOARD ── -->
+  <div class="dashboard">
+    <div class="dashboard-header">
+      <span>SHADOWBRIDGE COMMAND CENTER v2.1</span>
+      <div class="status-indicator">
+        <div class="status-dot"></div>
+        <span>OPERATIONAL</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="metric-card">
+        <span class="metric-label">━━ MONITORED HOSTS</span>
+        <div class="metric-value">8</div>
+        <span class="metric-unit">machines online</span>
+        <div class="metric-bar">
+          <div class="metric-bar-fill"></div>
+        </div>
+        <div class="metric-status">✓ all responsive</div>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">━━ THREAT LEVEL</span>
+        <div class="metric-value" style="color:var(--green);">0</div>
+        <span class="metric-unit">active incidents</span>
+        <div class="metric-bar">
+          <div class="metric-bar-fill" style="width:5%;"></div>
+        </div>
+        <div class="metric-status">✓ secure perimeter</div>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">━━ HONEYPOT HITS</span>
+        <div class="metric-value" style="color:var(--orange);">47</div>
+        <span class="metric-unit">SSH brute attempts</span>
+        <div class="metric-bar">
+          <div class="metric-bar-fill"></div>
+        </div>
+        <div class="metric-status">⚠ blocked & logged</div>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">━━ MITRE TTPs</span>
+        <div class="metric-value">14</div>
+        <span class="metric-unit">tactic coverage</span>
+        <div class="metric-bar">
+          <div class="metric-bar-fill"></div>
+        </div>
+        <div class="metric-status">✓ mapped & tracked</div>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">━━ DATA EXFIL RISK</span>
+        <div class="metric-value" style="color:var(--green);">2.1%</div>
+        <span class="metric-unit">breach probability</span>
+        <div class="metric-bar">
+          <div class="metric-bar-fill" style="width:2%;"></div>
+        </div>
+        <div class="metric-status">✓ baseline compliance</div>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">━━ RESPONSE TIME</span>
+        <div class="metric-value">0ms</div>
+        <span class="metric-unit">alert latency</span>
+        <div class="metric-bar">
+          <div class="metric-bar-fill" style="width:1%;"></div>
+        </div>
+        <div class="metric-status">✓ sub-millisecond</div>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">━━ CANARY TOKENS</span>
+        <div class="metric-value">23</div>
+        <span class="metric-unit">deployed & armed</span>
+        <div class="metric-bar">
+          <div class="metric-bar-fill"></div>
+        </div>
+        <div class="metric-status">✓ zero triggers</div>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">━━ C2 SESSIONS</span>
+        <div class="metric-value">0</div>
+        <span class="metric-unit">active connections</span>
+        <div class="metric-bar">
+          <div class="metric-bar-fill" style="width:0%;"></div>
+        </div>
+        <div class="metric-status">✓ isolated</div>
+      </div>
+
+      <div class="metric-card">
+        <span class="metric-label">━━ HASH CRACKS</span>
+        <div class="metric-value">156</div>
+        <span class="metric-unit">monthly recovery</span>
+        <div class="metric-bar">
+          <div class="metric-bar-fill"></div>
+        </div>
+        <div class="metric-status">✓ rockyou + fasttrack</div>
+      </div>
+    </div>
+
+    <!-- Terminal Log -->
+    <div class="terminal-section">
+      <div class="terminal-header">
+        <div class="terminal-dot"></div>
+        <span>system.log — live event stream</span>
+      </div>
+      <div class="terminal-body">
+        <div class="terminal-line">
+          <span class="terminal-prompt">$</span>
+          <span class="terminal-cmd">tail -f security.log</span>
+        </div>
+        <div class="terminal-line">
+          <span class="terminal-prompt">[23:41]</span>
+          <span class="terminal-ok">✓ SSH BRUTE — 45.33.32.156 blocked after 12 attempts</span>
+        </div>
+        <div class="terminal-line">
+          <span class="terminal-prompt">[23:42]</span>
+          <span class="terminal-ok">✓ CANARY — honeypot.db accessed (no breach — lure confirmed)</span>
+        </div>
+        <div class="terminal-line">
+          <span class="terminal-prompt">[23:43]</span>
+          <span class="terminal-warn">⚠ IDS — Suricata SID:2023476 triggered (SQL injection attempt)</span>
+        </div>
+        <div class="terminal-line">
+          <span class="terminal-prompt">[23:44]</span>
+          <span class="terminal-ok">✓ ATLAS — T1110.001 Brute Force logged and mitigated</span>
+        </div>
+        <div class="terminal-line">
+          <span class="terminal-prompt">$</span>
+          <span class="terminal-cursor"></span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-<script>
-// Generate starfield
-const starsContainer = document.getElementById('stars');
-for(let i=0;i<80;i++){
-  const star=document.createElement('div');
-  star.className='star';
-  star.style.left=Math.random()*100+'%';
-  star.style.top=Math.random()*100+'%';
-  star.style.animationDelay=Math.random()*3+'s';
-  starsContainer.appendChild(star);
-}
-
-// Mouse parallax tracking
-const spaceship=document.getElementById('spaceship');
-document.addEventListener('mousemove',(e)=>{
-  const x=(e.clientX/window.innerWidth-0.5)*30;
-  const y=(e.clientY/window.innerHeight-0.5)*30;
-  spaceship.style.transform=`
-    translateX(calc(-50% + ${x}px))
-    translateY(calc(-50% + ${y}px))
-    rotateX(${15+y*0.5}deg)
-    rotateY(${-20+x*0.5}deg)
-    rotateZ(5deg)
-  `;
-});
-
-// Reset on mouse leave
-document.addEventListener('mouseleave',()=>{
-  spaceship.style.transition='transform 0.3s ease-out';
-  spaceship.style.transform=`
-    translateX(-50%)
-    translateY(-50%)
-    rotateX(15deg)
-    rotateY(-20deg)
-    rotateZ(5deg)
-  `;
-  setTimeout(()=>{
-    spaceship.style.transition='none';
-  },300);
-});
-</script>
 
 </body>
 </html>
