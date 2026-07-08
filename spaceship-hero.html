@@ -598,5 +598,58 @@ nav{
   </div>
 </div>
 
+<script>
+// Scroll parallax + color shift
+window.addEventListener('scroll',()=>{
+  const scroll=window.scrollY;
+  const maxScroll=document.documentElement.scrollHeight-window.innerHeight;
+  const scrollPercent=scroll/maxScroll;
+
+  // First cube parallax
+  const cube1=document.querySelectorAll('.geo-cube')[0];
+  if(cube1){
+    cube1.style.transform=`translate(-50%,-50%) translateY(${-scroll*0.3}px) rotateX(20deg) rotateY(${30+scroll*0.5}deg)`;
+    const opacity=Math.max(0.3,1-scroll/500);
+    cube1.style.opacity=opacity;
+
+    // Color shift
+    const hue=Math.min(180,scrollPercent*360);
+    const faces=cube1.querySelectorAll('.cube-face');
+    faces.forEach(face=>{
+      face.style.borderColor=`hsl(${hue},100%,50%)`;
+      face.style.textShadow=`0 0 20px hsl(${hue},100%,60%)`;
+    });
+  }
+
+  // Second cube parallax (opposite direction)
+  const cube2=document.querySelectorAll('.geo-cube')[1];
+  if(cube2){
+    cube2.style.transform=`translate(50%,-50%) translateY(${scroll*0.4}px) rotateX(20deg) rotateY(${-scroll*0.5}deg)`;
+    const opacity=Math.max(0.2,1-scroll/600);
+    cube2.style.opacity=opacity;
+
+    // Inverse color shift
+    const hue=Math.min(360,scrollPercent*360+180)%360;
+    const faces=cube2.querySelectorAll('.cube-face');
+    faces.forEach(face=>{
+      face.style.borderColor=`hsl(${hue},100%,50%)`;
+      face.style.textShadow=`0 0 20px hsl(${hue},100%,60%)`;
+    });
+  }
+
+  // Dashboard glow shift
+  const dashboard=document.querySelector('.dashboard');
+  if(dashboard && scroll>200){
+    const intensity=Math.min(0.5,scroll/1000);
+    dashboard.style.setProperty('--glow-intensity',intensity);
+  }
+});
+
+// Initial state
+document.querySelectorAll('.geo-cube').forEach(cube=>{
+  cube.style.transition='none';
+  cube.style.willChange='transform,opacity';
+});
+</script>
 </body>
 </html>
