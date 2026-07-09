@@ -1,0 +1,7 @@
+---
+deployment:
+  targets:
+    - name: production
+      paths:
+        - source: /
+          target: public_html
