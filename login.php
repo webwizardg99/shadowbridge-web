@@ -67,7 +67,7 @@ body{background:var(--bg);color:var(--fg);font-family:'Segoe UI','Inter',system-
 body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,255,.012) 2px,rgba(0,212,255,.012) 4px);pointer-events:none;z-index:9999;}
 nav{position:sticky;top:0;z-index:100;background:rgba(6,8,16,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,212,255,.12);padding:14px 48px;display:flex;align-items:center;justify-content:space-between;}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:.9rem;font-weight:700;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;}
-.nav-logo svg{width:28px;height:28px;}
+.nav-logo img{width:28px;height:28px;border-radius:6px;}
 .nav-right a{color:var(--muted);text-decoration:none;font-size:.82rem;margin-left:24px;}
 .nav-right a:hover{color:var(--fg);}
 main{flex:1;display:flex;align-items:center;justify-content:center;padding:60px 20px;}
@@ -94,10 +94,7 @@ footer{text-align:center;padding:24px;color:var(--muted);font-size:.72rem;border
 <body>
 <nav>
   <a class="nav-logo" href="/">
-    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M14 2L4 7v7c0 5.5 4.3 10.7 10 12 5.7-1.3 10-6.5 10-12V7L14 2z" stroke="#00d4ff" stroke-width="1.5" fill="none"/>
-      <path d="M10 14l3 3 5-5" stroke="#00ff9d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+    <img src="/shadowbridge-logo-128.png" alt="ShadowBridge">
     ShadowBridge
   </a>
   <div class="nav-right">

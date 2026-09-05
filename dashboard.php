@@ -33,7 +33,8 @@ html,body{height:100%;background:var(--bg);color:var(--fg);font-family:var(--fon
 .layout{display:flex;height:100vh;overflow:hidden;}
 /* Sidebar */
 .sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
-.sidebar-logo{padding:20px 16px 16px;border-bottom:1px solid var(--border);}
+.sidebar-logo{padding:20px 16px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.sidebar-logo img{width:28px;height:28px;border-radius:6px;flex-shrink:0;}
 .sidebar-logo .brand{font-size:.85rem;font-weight:700;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;}
 .sidebar-logo .sub{font-size:.65rem;color:var(--muted);letter-spacing:1px;margin-top:2px;}
 .node-status{margin:12px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-size:.7rem;}
@@ -186,8 +187,11 @@ nav a .nav-badge{position:absolute;right:12px;background:var(--red);color:#fff;f
 
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <div class="brand">ShadowBridge</div>
-    <div class="sub">NOX Control Panel</div>
+    <img src="/shadowbridge-logo-128.png" alt="ShadowBridge">
+    <div>
+      <div class="brand">ShadowBridge</div>
+      <div class="sub">NOX Control Panel</div>
+    </div>
   </div>
   <div class="node-status">
     <div class="label">NOX Lab Node</div>
@@ -604,7 +608,7 @@ function setOffline() {
 function renderAll(data) {
   const svcs = data.services || {};
   renderServices(svcs);
-  renderMachines(data.machines || []);
+  renderMachines((data.machines && data.machines.length) ? data.machines : (data.cpu_pct!=null ? [{name:data.node_name||data.node_id, ip:data.hostname||"", online:true, cpu_pct:data.cpu_pct, mem_pct:data.mem_pct, disk_pct:data.disk_pct}] : []));
   renderSentinel(data.sentinel || {});
   renderAtlas(data.atlas || {});
   renderVault(data.vault || {});
@@ -615,7 +619,7 @@ function renderAll(data) {
 
   const arr = Object.values(svcs);
   document.getElementById('stat-services').textContent = arr.filter(s=>s.up).length+'/'+arr.length;
-  document.getElementById('stat-machines').textContent = (data.machines||[]).filter(m=>m.online).length;
+  document.getElementById('stat-machines').textContent = ((data.machines && data.machines.length) ? data.machines.filter(m=>m.online).length : (data.cpu_pct!=null?1:0));
   document.getElementById('stat-honeypot').textContent = data.sentinel?.ssh_24h ?? '—';
 
   const alertsToday = data.sentinel?.alerts_today ?? 0;
@@ -641,7 +645,7 @@ function renderAll(data) {
 }
 
 function renderServices(svcs) {
-  document.getElementById('serviceGrid').innerHTML = SERVICES.map(s => {
+  document.getElementById("serviceGrid").innerHTML = SERVICES.filter(s => svcs[s.id] || svcs[s.port]).map(s => {
     const info = svcs[s.id] || svcs[s.port] || null;
     const up   = info?.up;
     const badge = up==null ? `<span class="badge warn">Unknown</span>`
